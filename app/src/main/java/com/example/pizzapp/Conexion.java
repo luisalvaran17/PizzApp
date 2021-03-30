@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+// No se usa por ahora
 public class Conexion extends SQLiteOpenHelper {
 
     public Conexion(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
@@ -14,6 +15,7 @@ public class Conexion extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
     }
 
     @Override

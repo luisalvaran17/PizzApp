@@ -14,12 +14,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            Conexion conn = new Conexion(this, "pizzApp.db", null, 1);
-            SQLiteDatabase db = conn.getWritableDatabase();
+            PizzAppDB inveDB = new PizzAppDB(this);
+            SQLiteDatabase db = inveDB.getWritableDatabase();
+            inveDB.onCreate(db);
 
-            if(conn != null){
-                Toast.makeText(getApplicationContext(), "CONEXIÓN FALLIDA", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getApplicationContext(), "Creando", Toast.LENGTH_SHORT).show();
 
         }catch (Exception e) {
             e.getMessage();
