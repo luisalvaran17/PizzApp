@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">PizzApp</string>
+    <string name="WelcomeMessage">Bienvenido</string>
+    <string name="LoginMessage">Iniciar sesión</string>
+    <string name="etCorreo">Correo</string>
+    <string name="etPassword">Contraseña</string>
+    <string name="btnLogin">Iniciar sesión</string>
+    <string name="title_activity_home">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_account">Cuenta</string>
+    <string name="buttonVolver">Cerrar sesión</string>
+
+    <string name="title_new_1">WhatsApp retrasa los cambios en su política de privacidad ante la "huida" de sus usuarios</string>
+    <string name="body_new_1">A principios de enero, los usuarios de WhatsApp comenzaron a ver un mensaje que avisaba de cambios en el servicio sobre los datos que recopila la aplicación y su tratamiento, así como relativos a la forma en que los negocios pueden usar los servicios alojados de Facebook para almacenar y administrar sus chats de WhatsApp. </string>
+
+    <string name="title_new_2">Así puedes saber si tu móvil actualizará a Android 11 en 2021</string>
+    <string name="body_new_2">Es muy probable que te estés preguntando dónde está la actualización a Android 11 para tu smartphone. Por desgracia las actualizaciones Android dependen del fabricante que te vendió el dispositivo y no tanto de Google, por lo que esta actualización podría retrasarse mucho o no llegar.</string>
+
+    <string name="title_new_3">Un fallo crítico en NTFS dentro de Windows 10 puede dañar nuestro disco duro o SSD</string>
+    <string name="body_new_3">Han encontrado un nuevo fallo crítico en NTFS dentro de Windows 10 que puede acabar con la vida de nuestra unidad de almacenamiento. NTFS es un formato de archivos que dentro de Windows 10 gestiona todo los archivos y carpetas almacenadas en una unidad de almacenamiento, ya sea en un pincho USB, en un disco duro o en una unidad SSD.</string>
+    <string name="CrearCuenta">Crear cuenta</string>
+    <string name="etPasswordConfirm">Confirmar contraseña</string>
+    <string name="btnSignup">Crear</string>
+    <string name="btnVolverLogin">Atrás</string>
+    <string name="RegisterMessage">Registrarse</string>
+    <string name="btnRegistro">Registrarse</string>
 </resources>

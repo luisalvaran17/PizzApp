@@ -42,7 +42,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
         public static final String TABLE_NAME_USUARIOS = "usuarios";
         public static final String COLUMN_ID_USUARIOS = "id_usuarios";
-        public static final String COLUMN_NOMBRE_USUARIO = "nombre_usuario";
+        public static final String COLUMN_NOMBRE_USUARIO = "nombre_usuario";  // QUITAR
         public static final String COLUMN_CONTRASENA_USUARIO = "contrasena_usuario";
         public static final String COLUMN_CORREO_USUARIO = "correo_usuario";
 
