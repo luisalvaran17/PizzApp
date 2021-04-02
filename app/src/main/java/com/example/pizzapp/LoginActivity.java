@@ -16,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void irRegistro(View view) {
-        Intent ir = new Intent(this, RegistroActivity.class);
+        Intent ir = new Intent(this, ActivityBarCliente.class);
         ir.addFlags(ir.FLAG_ACTIVITY_CLEAR_TOP | ir.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(ir);
     }

@@ -2,21 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home_repartidor"
-        android:icon="@drawable/home_circle"
-        android:title="@string/title_home" />
+        android:icon="@drawable/home_selector"
+        android:title="@string/title_home"
+        />
 
     <item
         android:id="@+id/navigation_pedidos_repartidor"
-        android:icon="@drawable/package_variant"
-        android:title="Mis pedidos" />
+        android:icon="@drawable/entregas_selector"
+        android:title="Mis entregas" />
 
     <item
         android:id="@+id/navigation_localizacion_repartidor"
-        android:icon="@drawable/map_marker_radius"
+        android:icon="@drawable/mapa_selector"
         android:title="Localización" />
 
     <item
         android:id="@+id/navigation_perfil_repartidor"
-        android:icon="@drawable/account_circle"
+        android:icon="@drawable/user_selector"
         android:title="Perfil" />
 </menu>

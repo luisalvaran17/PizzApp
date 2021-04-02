@@ -1,5 +1,6 @@
 package com.example.pizzapp;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,6 +19,7 @@ public class ActivityBarCliente extends AppCompatActivity {
         setContentView(R.layout.activity_bar_cliente);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         getSupportActionBar().hide();
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -26,7 +28,6 @@ public class ActivityBarCliente extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
     }
 
 }

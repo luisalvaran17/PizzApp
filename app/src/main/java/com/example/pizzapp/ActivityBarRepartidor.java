@@ -1,9 +1,13 @@
 package com.example.pizzapp;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +20,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ActivityBarRepartidor extends AppCompatActivity {
     BottomNavigationView navView;
+    ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_repartidor);
         navView = findViewById(R.id.nav_view2);
-        BottomNavigationView val = findViewById(R.id.nav_view2);
         getSupportActionBar().hide();
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
