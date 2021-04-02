@@ -22,7 +22,7 @@ public class PerfilFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         perfilViewModel =
                 new ViewModelProvider(this).get(PerfilViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_pedidos, container, false);
+        View root = inflater.inflate(R.layout.fragment_perfil, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
         perfilViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
