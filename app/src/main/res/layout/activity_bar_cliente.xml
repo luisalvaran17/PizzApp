@@ -19,6 +19,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:itemBackground="@color/red_main"
         app:itemTextColor="@color/white"
+        app:itemIconSize="28sp"
         app:menu="@menu/bottom_nav_menu_cliente" />
 
     <fragment
