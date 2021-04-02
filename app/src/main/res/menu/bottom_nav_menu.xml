@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home_circle"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_pedidos"
+        android:icon="@drawable/food_fork_drink"
+        android:title="Mis pedidos" />
+
+    <item
+        android:id="@+id/navigation_favoritos"
+        android:icon="@drawable/cards_heart"
+        android:title="Favoritos" />
+
+    <item
+        android:id="@+id/navigation_perfil"
+        android:icon="@drawable/account_circle"
+        android:title="Perfil" />
+</menu>

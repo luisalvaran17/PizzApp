@@ -25,4 +25,9 @@
     <string name="btnVolverLogin">Atrás</string>
     <string name="RegisterMessage">Registrarse</string>
     <string name="btnRegistro">Registrarse</string>
+    <string name="title_activity_bar_repartidor">MainActivity</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="title_favoritos">Favoritos</string>
+    <string name="title_pedidos">Pedidos</string>
 </resources>
