@@ -1,9 +1,12 @@
 package com.example.pizzapp;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -142,6 +145,29 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
     public PizzAppDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+
+    public boolean insertUsuario(String nombre_usuario, String contrasena, String correo){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("nombre_usuario", nombre_usuario);
+        contentValues.put("contrasena_usuario", contrasena);
+        contentValues.put("correo_usuario", correo);
+        long result = db.insert("usuarios", null, contentValues);
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public Cursor getPedidos(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {"false"};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "entregado_check=?", args, null, null,null);
+        System.out.println("result: " + result.toString());
+        return result;
     }
 
     @Override

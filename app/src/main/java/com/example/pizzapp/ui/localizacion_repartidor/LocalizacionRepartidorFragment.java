@@ -22,8 +22,6 @@ import com.example.pizzapp.R;
 public class LocalizacionRepartidorFragment extends Fragment {
 
     private LocalizacionRepartidorViewModel localizacionRepartidorViewModel;
-    public String selected_address;
-    MapsFragment mapsFragment;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +29,7 @@ public class LocalizacionRepartidorFragment extends Fragment {
                 new ViewModelProvider(this).get(LocalizacionRepartidorViewModel.class);
         View root = inflater.inflate(R.layout.fragment_localizacion_repartidor, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        final Spinner spinner = root.findViewById(R.id.spinner);
+        // final Spinner spinner = root.findViewById(R.id.spinner);
         localizacionRepartidorViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -42,16 +40,16 @@ public class LocalizacionRepartidorFragment extends Fragment {
 
         // array direcciones
 
-        String direcciones_array [] = {"Venus", "Mercury", "Saturn", "Uranus", "Neptune"};
+        // String direcciones_array [] = {"Carrera 8ª Oeste #26, Tuluá, Valle del Cauca", "Carrera 8a #26, Tuluá, Valle del Cauca"};
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, direcciones_array);
+        // ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, direcciones_array);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        // spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
+        // spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /**
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
             {
@@ -63,7 +61,7 @@ public class LocalizacionRepartidorFragment extends Fragment {
             {
             }
         });
-
+            **/
         return root;
     }
 
