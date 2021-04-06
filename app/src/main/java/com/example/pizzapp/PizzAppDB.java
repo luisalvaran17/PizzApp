@@ -31,7 +31,6 @@ public class PizzAppDB extends SQLiteOpenHelper {
         public static final String COLUMN_DESCUENTO = "descuento";
         public static final String COLUMN_DISPONIBILIDAD = "disponibilidad";
         public static final String COLUMN_CANT_PORCIONES = "cant_porciones";
-        public static final String COLUMN_ID_PEDIDO_PRODUCTO = "id_pedido";
         public static final String COLUMN_ID_PIZZERIA_PRODUCTO = "id_pizzeria";
 
         public static final String TABLE_NAME_PEDIDO = "pedido";
@@ -40,12 +39,13 @@ public class PizzAppDB extends SQLiteOpenHelper {
         public static final String COLUMN_CANTIDAD_PRODUCTO = "cant_producto";
         public static final String COLUMN_TOTAL_PAGO = "total_pago";
         public static final String COLUMN_DIRECCION_PEDIDO = "direccion_pedido";
+        public static final String COLUMN_TEL_CLIENTE_PEDIDO = "tel_cliente";
         public static final String COLUMN_ENTREGADO_CHECK = "entregado_check";
         public static final String COLUMN_ID_USUARIO_PEDIDO = "id_usuario";
+        public static final String COLUMN_ID_PRODUCTO_PEDIDO = "id_producto";
 
         public static final String TABLE_NAME_USUARIOS = "usuarios";
         public static final String COLUMN_ID_USUARIOS = "id_usuarios";
-        public static final String COLUMN_NOMBRE_USUARIO = "nombre_usuario";  // QUITAR
         public static final String COLUMN_CONTRASENA_USUARIO = "contrasena_usuario";
         public static final String COLUMN_CORREO_USUARIO = "correo_usuario";
 
@@ -56,9 +56,11 @@ public class PizzAppDB extends SQLiteOpenHelper {
         public static final String TABLE_NAME_CLIENTE = "cliente";
         public static final String COLUMN_ID_CLIENTE = "id_cliente";
         public static final String COLUMN_DIRECCION_CLIENTE = "direccion_cliente";
-        public static final String COLUMN_FECHA_NAC = "fecha_nac";
-        public static final String COLUMN_EDAD = "edad";
+        public static final String COLUMN_TEL_CLIENTE = "tel_cliente";
 
+        public static final String TABLE_NAME_ASIGNACION = "asignacion";
+        public static final String COLUMN_ID_REPARTIDOR_ASIG = "id_repartidor";
+        public static final String COLUMN_ID_PEDIDO_ASIG = "id_pedido";
     }
 
     public static final String SQL_CREATE_PIZZERIA =
@@ -78,10 +80,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
                 DataBasePZ.COLUMN_DESCUENTO + " INTEGER," +
                 DataBasePZ.COLUMN_DISPONIBILIDAD + " INTEGER," +
                 DataBasePZ.COLUMN_CANT_PORCIONES + " INTEGER," +
-                DataBasePZ.COLUMN_ID_PEDIDO_PRODUCTO + " INTEGER," +
                 DataBasePZ.COLUMN_ID_PIZZERIA_PRODUCTO + " INTEGER,"+
-                    "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_PEDIDO_PRODUCTO + ") REFERENCES " +
-                    DataBasePZ.TABLE_NAME_PEDIDO + "(" + DataBasePZ.COLUMN_ID_PEDIDO + ")," +
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_PIZZERIA_PRODUCTO + ") REFERENCES " +
                     DataBasePZ.TABLE_NAME_PIZZERIA + "(" + DataBasePZ.COLUMN_ID_PIZERRIA + ") )";
 
@@ -92,15 +91,19 @@ public class PizzAppDB extends SQLiteOpenHelper {
                     DataBasePZ.COLUMN_CANTIDAD_PRODUCTO + " INTEGER," +
                     DataBasePZ.COLUMN_TOTAL_PAGO + " INTEGER," +
                     DataBasePZ.COLUMN_DIRECCION_PEDIDO + " TEXT," +
+                    DataBasePZ.COLUMN_TEL_CLIENTE_PEDIDO + " TEXT," +
                     DataBasePZ.COLUMN_ENTREGADO_CHECK + " TEXT," +
                     DataBasePZ.COLUMN_ID_USUARIO_PEDIDO + " INTEGER," +
+                    DataBasePZ.COLUMN_ID_PRODUCTO_PEDIDO + " INTEGER," +
+                    "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_PRODUCTO_PEDIDO + ") REFERENCES " +
+                    DataBasePZ.TABLE_NAME_PROD + "(" + DataBasePZ.COLUMN_ID_PRODUCTO + ")," +
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_USUARIO_PEDIDO + ") REFERENCES " +
                     DataBasePZ.TABLE_NAME_USUARIOS + "(" + DataBasePZ.COLUMN_ID_USUARIOS + ") )";
+
 
     public static final String SQL_CREATE_USUARIOS =
             "CREATE TABLE " + DataBasePZ.TABLE_NAME_USUARIOS + " (" +
                     DataBasePZ.COLUMN_ID_USUARIOS + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    DataBasePZ.COLUMN_NOMBRE_USUARIO + " TEXT," +
                     DataBasePZ.COLUMN_CONTRASENA_USUARIO + " TEXT," +
                     DataBasePZ.COLUMN_CORREO_USUARIO + " TEXT)";
 
@@ -116,11 +119,18 @@ public class PizzAppDB extends SQLiteOpenHelper {
             "CREATE TABLE " + DataBasePZ.TABLE_NAME_CLIENTE + " (" +
                     DataBasePZ.COLUMN_ID_CLIENTE + " INTEGER PRIMARY KEY," +
                     DataBasePZ.COLUMN_DIRECCION_CLIENTE + " TEXT," +
-                    DataBasePZ.COLUMN_FECHA_NAC + " DATE," +
-                    DataBasePZ.COLUMN_EDAD + " INTEGER," +
+                    DataBasePZ.COLUMN_TEL_CLIENTE + " TEXT," +
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_CLIENTE + ") REFERENCES " +
                     DataBasePZ.TABLE_NAME_USUARIOS + "(" + DataBasePZ.COLUMN_ID_USUARIOS + ") )";
 
+    public static final String SQL_CREATE_ASIGNACION =
+            "CREATE TABLE " + DataBasePZ.TABLE_NAME_ASIGNACION + " (" +
+                    DataBasePZ.COLUMN_ID_REPARTIDOR_ASIG + " INTEGER," +
+                    DataBasePZ.COLUMN_ID_PEDIDO_ASIG + " INTEGER," +
+                    "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_REPARTIDOR_ASIG + ") REFERENCES " +
+                    DataBasePZ.TABLE_NAME_REPARTIDOR + "(" + DataBasePZ.COLUMN_ID_REPARTIDOR + ")," +
+                    "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_PEDIDO_ASIG + ") REFERENCES " +
+                    DataBasePZ.TABLE_NAME_PEDIDO + "(" + DataBasePZ.COLUMN_ID_PEDIDO  + ") )";
 
     private static final String SQL_DELETE_PIZZERIA =
             "DROP TABLE IF EXISTS " + DataBasePZ.TABLE_NAME_PIZZERIA;
@@ -139,6 +149,11 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
     private static final String SQL_DELETE_PEDIDO =
             "DROP TABLE IF EXISTS " + DataBasePZ.TABLE_NAME_PEDIDO;
+
+    private static final String SQL_DELETE_ASIGNACION =
+            "DROP TABLE IF EXISTS " + DataBasePZ.TABLE_NAME_ASIGNACION;
+
+    private final String SQL_JOIN_REPARTIDOR_PEDIDO = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "pizApp.db";
@@ -178,6 +193,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_USUARIOS);
         db.execSQL(SQL_CREATE_REPARTIDOR);
         db.execSQL(SQL_CREATE_CLIENTE);
+        db.execSQL(SQL_CREATE_ASIGNACION);
     }
 
     @Override
@@ -188,6 +204,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_USUARIOS);
         db.execSQL(SQL_DELETE_REPARTIDOR);
         db.execSQL(SQL_DELETE_CLIENTE);
+        db.execSQL(SQL_DELETE_ASIGNACION);
         onCreate(db);
     }
 

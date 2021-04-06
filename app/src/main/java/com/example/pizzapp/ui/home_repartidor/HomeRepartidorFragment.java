@@ -1,6 +1,7 @@
 package com.example.pizzapp.ui.home_repartidor;
 
 import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pizzapp.PedidoPendienteFragment;
+import com.example.pizzapp.PizzAppDB;
 import com.example.pizzapp.R;
 import com.example.pizzapp.ui.pedidos_repartidor.PedidosRepartidorFragment;
 
 public class HomeRepartidorFragment extends Fragment {
-
+    PizzAppDB db;
     private HomeRepartidorViewModel homeRepartidorViewModel;
 
     @SuppressLint("ResourceType")
@@ -58,5 +60,29 @@ public class HomeRepartidorFragment extends Fragment {
         transaction.add(R.id.homeRepartidorLayout, pedidoPendienteFragment3);
 
         transaction.commit();
+    }
+
+    public void getPedidos() {
+        db = new PizzAppDB(getContext());
+        try {
+            Cursor c = db.getPedidos();
+            int cantidad_pedidos_pendientes = 0;
+            //Nos aseguramos de que existe al menos un registro
+            if (c.moveToFirst()) {
+                //Recorremos el cursor hasta que no haya más registros
+                do {
+                    int id_pedido = c.getInt(0);
+                    String fecha_pedido = c.getString(1);
+                    String cant_producto = c.getString(2);
+                    String total_pago = c.getString(3);
+                    String direccion_pedido = c.getString(4);
+                    String entregado_check = c.getString(5);
+                    int id_usuario = c.getInt(6);
+                } while (c.moveToNext());
+            }
+        }catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
     }
 }

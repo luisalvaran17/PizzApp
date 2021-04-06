@@ -13,16 +13,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        try {
-            PizzAppDB inveDB = new PizzAppDB(this);
-            SQLiteDatabase db = inveDB.getWritableDatabase();
-            inveDB.onCreate(db);
+        PizzAppDB inveDB = new PizzAppDB(this);
+        SQLiteDatabase db = inveDB.getWritableDatabase();
+        inveDB.onCreate(db);
 
-            Toast.makeText(getApplicationContext(), "Creando", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Creando", Toast.LENGTH_SHORT).show();
 
-        }catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-        }
     }
 }
