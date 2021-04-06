@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "565449245508",
+    "project_id": "pizzapp-18c76",
+    "storage_bucket": "pizzapp-18c76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565449245508:android:99f74f1687555bcb4b4d11",
+        "android_client_info": {
+          "package_name": "com.example.pizzapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565449245508-eub3hi6moqhh7kncn3en4le5ngq8at2j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvIcAZwOghccGRu1gT8kIOpdw7bDFcong"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565449245508-eub3hi6moqhh7kncn3en4le5ngq8at2j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

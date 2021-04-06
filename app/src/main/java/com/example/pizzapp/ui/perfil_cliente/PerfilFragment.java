@@ -1,22 +1,33 @@
 package com.example.pizzapp.ui.perfil_cliente;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pizzapp.ActivityBarCliente;
+import com.example.pizzapp.LoginActivity;
 import com.example.pizzapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class PerfilFragment extends Fragment {
+public class PerfilFragment extends Fragment implements View.OnClickListener {
 
     private PerfilViewModel perfilViewModel;
+
+    Button btnCerrarSesion;
+
+    //Bundle dataRecieve = this.getArguments();
+    //String correo_cliente = dataRecieve.getString("correo_cliente");
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +41,27 @@ public class PerfilFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        btnCerrarSesion = root.findViewById(R.id.btnCerrarSesion);
+        btnCerrarSesion.setOnClickListener(this);
+
         return root;
     }
+
+    @Override
+    public void onClick(View v) {
+
+        FirebaseAuth.getInstance().signOut();
+        goLogin();
+
+    }
+
+
+    private void goLogin() {
+        Intent irHome = new Intent(getActivity(), LoginActivity.class);
+        irHome.addFlags(irHome.FLAG_ACTIVITY_CLEAR_TOP | irHome.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(irHome);
+    }
+
+
 }
