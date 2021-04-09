@@ -1,12 +1,7 @@
 package com.example.pizzapp;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pizzapp.ui.pedidos_repartidor.PedidosRepartidorViewModel;
-import com.google.firebase.auth.FirebaseAuth;
-
-import org.w3c.dom.Text;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EntregasPendientes#} factory method to
+ * Use the {@link PedidosEntregadosFragment#} factory method to
  * create an instance of this fragment.
  */
-public class EntregasPendientes extends Fragment {
+public class PedidosEntregadosFragment extends Fragment {
 
     public static String view;
     public static int botones [] = new int[100];
@@ -38,7 +30,6 @@ public class EntregasPendientes extends Fragment {
     public static int contador2_text_view = 0;
 
     public PizzAppDB db;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +39,7 @@ public class EntregasPendientes extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public EntregasPendientes() {
+    public PedidosEntregadosFragment() {
         // Required empty public constructor
     }
 
@@ -122,19 +113,15 @@ public class EntregasPendientes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_entregas_pendientes, container, false);
-        Button btnEntregar = v.findViewById(R.id.buttonEntregar);
+        View v = inflater.inflate(R.layout.fragment_entregados, container, false);
         TextView textViewPorciones = v.findViewById(R.id.textViewPorciones);
         TextView textViewTel = v.findViewById(R.id.textViewTelf);
         TextView textViewDireccion = v.findViewById(R.id.textViewDireccion);
         TextView textViewIdPedido = v.findViewById(R.id.textViewIdPedido);
-        newInstanceButton(btnEntregar);
         newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido);
         db = new PizzAppDB(getContext());
 
-        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        Cursor c = db.getPedidosAsignados();
+        Cursor c = db.getPedidosEntregados();
         int id_pedido = 0;
 
         try {
@@ -163,43 +150,12 @@ public class EntregasPendientes extends Fragment {
             e.printStackTrace();
         }
 
-        // Button, asignación tag para diferenciar los botones
-        btnEntregar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // System.out.println(btnEntregar.getTag());
-
-                db = new PizzAppDB(getContext());
-                Cursor c = db.getPedido(btnEntregar.getTag().toString());
-
-                //int id_repartidor = 1;  //  -> PENDIENTE: Traer id del login
-                int id_pedido = 0;
-
-                try {
-                    if (c.moveToFirst()) {
-                        do {
-                            id_pedido = c.getInt(0);
-                        } while (c.moveToNext());
-                    }
-                    Toast.makeText(getContext(), "Pedido entregado", Toast.LENGTH_LONG).show();
-                    db.updatePedidoEntregado(id_pedido);
-                    db.updateCantidadPedidosEntregados(1);  // OBTENER ID REPARTIDOR FROM LOGIN
-                    btnEntregar.setEnabled(false);
-                }catch (Exception e) {
-                    e.getMessage();
-                    e.printStackTrace();
-                    Toast.makeText(getContext(), "Ha ocurrido un error, el pedido ya fue entregado", Toast.LENGTH_LONG).show();
-                }
-            }
-
-        });
-
         return v;
     }
 
     public Cursor getPedidosAsignados() {
         db = new PizzAppDB(getContext());
-        Cursor c = db.getPedidosAsignados();
+        Cursor c = db.getPedidosEntregados();
         try {
             int cantidad_pedidos_pendientes = 0;
             //Nos aseguramos de que existe al menos un registro
@@ -224,5 +180,4 @@ public class EntregasPendientes extends Fragment {
         }
         return c;
     }
-
 }

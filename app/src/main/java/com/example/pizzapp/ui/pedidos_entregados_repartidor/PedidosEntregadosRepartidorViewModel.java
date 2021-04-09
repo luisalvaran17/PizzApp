@@ -1,21 +1,18 @@
-package com.example.pizzapp.ui.home_repartidor;
-
-import android.view.View;
+package com.example.pizzapp.ui.pedidos_entregados_repartidor;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeRepartidorViewModel extends ViewModel {
+public class PedidosEntregadosRepartidorViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeRepartidorViewModel() {
+    public PedidosEntregadosRepartidorViewModel() {
         mText = new MutableLiveData<>();
     }
 
     public LiveData<String> getText() {
         return mText;
     }
-
 }

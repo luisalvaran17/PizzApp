@@ -27,7 +27,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     Button btnRegistrar;
     EditText etEmail, etContrasena, etConfirmarContrasena, etNombre, etTelefono, etDireccion;
     Bundle data = new Bundle();
-
+    public PizzAppDB db;
     //Variables de los datos a ingresar
 
     String email = "";
@@ -159,13 +159,16 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
             map.put("Telefono", telefono);
             map.put("Direccion", direccion);
             map.put("Contraseña", contrasena);
+            db = new PizzAppDB(this);
 
             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             dataBase.child("Users").child("Clientes").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task2) {
-                    if(task2.isSuccessful()){
+                    if(task2.isSuccessful()) {
+                        db.insertUsuario(id, nombre, contrasena, email);
+                        db.insertCliente(id, direccion, telefono);
                         showHomeCliente(etEmail.getText().toString());
                     }
                     else{
@@ -173,8 +176,10 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }
             });
+
         }else{
             showAlert();
         }
     }
+
 }

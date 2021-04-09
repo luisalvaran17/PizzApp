@@ -98,33 +98,26 @@ public class MapsFragment extends Fragment {
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
-
         try {
             // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
             if (address == null) {
                 return null;
             }
-
             Address location = address.get(0);
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-
         } catch (IOException ex) {
-
             ex.printStackTrace();
         }
-
         return p1;
     }
 
     public String[] getMarkers() {
-        System.out.println("entra");
         db = new PizzAppDB(getContext());
-        String direcciones_array [] = new String[100];
+        String direcciones_array [] = new String[1000];
         int iterador = 0;
         try {
-            Cursor c = db.getPedidos();
+            Cursor c = db.getPedidosAsignados();
             // Nos aseguramos de que existe al menos un registro
             if (c.moveToFirst()) {
                 // Recorremos el cursor hasta que no haya más registros

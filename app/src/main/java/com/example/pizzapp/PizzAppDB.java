@@ -41,11 +41,13 @@ public class PizzAppDB extends SQLiteOpenHelper {
         public static final String COLUMN_DIRECCION_PEDIDO = "direccion_pedido";
         public static final String COLUMN_TEL_CLIENTE_PEDIDO = "tel_cliente";
         public static final String COLUMN_ENTREGADO_CHECK = "entregado_check";
+        public static final String COLUMN_ASIGNADO_CHECK = "asignado_check";
         public static final String COLUMN_ID_USUARIO_PEDIDO = "id_usuario";
         public static final String COLUMN_ID_PRODUCTO_PEDIDO = "id_producto";
 
         public static final String TABLE_NAME_USUARIOS = "usuarios";
         public static final String COLUMN_ID_USUARIOS = "id_usuarios";
+        public static final String COLUMN_ID_NOMBRE = "nombre";
         public static final String COLUMN_CONTRASENA_USUARIO = "contrasena_usuario";
         public static final String COLUMN_CORREO_USUARIO = "correo_usuario";
 
@@ -93,6 +95,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
                     DataBasePZ.COLUMN_DIRECCION_PEDIDO + " TEXT," +
                     DataBasePZ.COLUMN_TEL_CLIENTE_PEDIDO + " TEXT," +
                     DataBasePZ.COLUMN_ENTREGADO_CHECK + " TEXT," +
+                    DataBasePZ.COLUMN_ASIGNADO_CHECK + " TEXT," +
                     DataBasePZ.COLUMN_ID_USUARIO_PEDIDO + " INTEGER," +
                     DataBasePZ.COLUMN_ID_PRODUCTO_PEDIDO + " INTEGER," +
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_PRODUCTO_PEDIDO + ") REFERENCES " +
@@ -103,13 +106,14 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
     public static final String SQL_CREATE_USUARIOS =
             "CREATE TABLE " + DataBasePZ.TABLE_NAME_USUARIOS + " (" +
-                    DataBasePZ.COLUMN_ID_USUARIOS + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    DataBasePZ.COLUMN_ID_USUARIOS + " TEXT PRIMARY KEY," +
+                    DataBasePZ.COLUMN_ID_NOMBRE +  " TEXT," +
                     DataBasePZ.COLUMN_CONTRASENA_USUARIO + " TEXT," +
                     DataBasePZ.COLUMN_CORREO_USUARIO + " TEXT)";
 
     public static final String SQL_CREATE_REPARTIDOR =
             "CREATE TABLE " + DataBasePZ.TABLE_NAME_REPARTIDOR + " (" +
-                    DataBasePZ.COLUMN_ID_REPARTIDOR + " INTEGER PRIMARY KEY," +
+                    DataBasePZ.COLUMN_ID_REPARTIDOR + " TEXT PRIMARY KEY," +
                     DataBasePZ.COLUMN_CANTIDAD_PEDIDO + " INTEGER,"+
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_REPARTIDOR + ") REFERENCES " +
                     DataBasePZ.TABLE_NAME_USUARIOS + "(" + DataBasePZ.COLUMN_ID_USUARIOS + ") )";
@@ -117,7 +121,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
     public static final String SQL_CREATE_CLIENTE =
             "CREATE TABLE " + DataBasePZ.TABLE_NAME_CLIENTE + " (" +
-                    DataBasePZ.COLUMN_ID_CLIENTE + " INTEGER PRIMARY KEY," +
+                    DataBasePZ.COLUMN_ID_CLIENTE + " TEXT PRIMARY KEY," +
                     DataBasePZ.COLUMN_DIRECCION_CLIENTE + " TEXT," +
                     DataBasePZ.COLUMN_TEL_CLIENTE + " TEXT," +
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_CLIENTE + ") REFERENCES " +
@@ -125,7 +129,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
     public static final String SQL_CREATE_ASIGNACION =
             "CREATE TABLE " + DataBasePZ.TABLE_NAME_ASIGNACION + " (" +
-                    DataBasePZ.COLUMN_ID_REPARTIDOR_ASIG + " INTEGER," +
+                    DataBasePZ.COLUMN_ID_REPARTIDOR_ASIG + " TEXT," +
                     DataBasePZ.COLUMN_ID_PEDIDO_ASIG + " INTEGER," +
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_REPARTIDOR_ASIG + ") REFERENCES " +
                     DataBasePZ.TABLE_NAME_REPARTIDOR + "(" + DataBasePZ.COLUMN_ID_REPARTIDOR + ")," +
@@ -153,7 +157,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ASIGNACION =
             "DROP TABLE IF EXISTS " + DataBasePZ.TABLE_NAME_ASIGNACION;
 
-    private final String SQL_JOIN_REPARTIDOR_PEDIDO = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
+    // private final String SQL_JOIN_REPARTIDOR_PEDIDO = "SELECT * FROM table_a a INNER JOIN table_b b ON a.id=b.other_id WHERE b.property_id=?";
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "pizApp.db";
@@ -162,11 +166,26 @@ public class PizzAppDB extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
-    public boolean insertUsuario(String nombre_usuario, String contrasena, String correo){
+    // CONSULTAS PARA REPARTIDOR
+    public boolean insertAsignacion(String id_repartidor, int id_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("nombre_usuario", nombre_usuario);
+        contentValues.put("id_repartidor", id_repartidor);
+        contentValues.put("id_pedido", id_pedido);
+        long result = db.insert("asignacion", null, contentValues);
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    // INSERT USUARIO
+    public boolean insertUsuario(String id_usuario, String nombre, String contrasena, String correo){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id_usuarios", id_usuario);
+        contentValues.put("nombre", nombre);
         contentValues.put("contrasena_usuario", contrasena);
         contentValues.put("correo_usuario", correo);
         long result = db.insert("usuarios", null, contentValues);
@@ -177,12 +196,140 @@ public class PizzAppDB extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getPedidos(){
+    // INSRERT CLIENTE
+    public boolean insertCliente(String id_cliente, String direccion_cliente, String tel_cliente){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id_cliente", id_cliente);
+        contentValues.put("direccion_cliente", direccion_cliente);
+        contentValues.put("tel_cliente", tel_cliente);
+        long result = db.insert("cliente", null, contentValues);
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    // INSERT REPARTIDOR
+    public boolean insertRepartidor(String id_repartidor, int cantidad_pedido){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id_repartidor", id_repartidor);
+        contentValues.put("cantidad_pedido", cantidad_pedido);
+        long result = db.insert("repartidor", null, contentValues);
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    public Cursor getPedidosNoAsignados(){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = new String[] {"false"};
-        Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "entregado_check=?", args, null, null,null);
-        System.out.println("result: " + result.toString());
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "asignado_check=?", args, null, null,null);
+        // System.out.println("result: " + result.toString());
         return result;
+    }
+
+    public Cursor getPedidosAsignados(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {"false", "true"};
+        Cursor result = db.rawQuery("SELECT * FROM " + DataBasePZ.TABLE_NAME_PEDIDO + " WHERE " +
+                DataBasePZ.COLUMN_ENTREGADO_CHECK+"=?" + " AND " + DataBasePZ.COLUMN_ASIGNADO_CHECK + "=?", args);
+        // System.out.println("result: " + result.toString());
+        return result;
+    }
+
+    public Cursor getPedidosEntregados(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {"true", "true"};
+        Cursor result = db.rawQuery("SELECT * FROM " + DataBasePZ.TABLE_NAME_PEDIDO + " WHERE " +
+                DataBasePZ.COLUMN_ENTREGADO_CHECK+"=?" + " AND " + DataBasePZ.COLUMN_ASIGNADO_CHECK + "=?", args);
+        // System.out.println("result: " + result.toString());
+        return result;
+    }
+
+    public Cursor getPedido(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {id};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "id_pedido=?", args, null, null,null);
+        // System.out.println("result: " + result.toString());
+        return result;
+    }
+
+    public boolean updatePedidoAsignado(int id_pedido){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("asignado_check", "true");
+        String[] args = new String[] {String.valueOf(id_pedido)};
+        long result = db.update(DataBasePZ.TABLE_NAME_PEDIDO, cv , "id_pedido=?", args);
+        // System.out.println("result: " + result.toString());
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public int cantidadPedidos(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {"1"}; // OBTENER ID REPARTIDOR DESDE LOGIN
+        int cantidad = 0;
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_REPARTIDOR, null , "id_repartidor=?", args,null,null,null);
+        //Cursor result = db.rawQuery("SELECT cantidad_pedido FROM " + DataBasePZ.TABLE_NAME_REPARTIDOR, args);
+        // System.out.println("result: " + result.toString());
+
+        try {
+
+            if (result.moveToFirst()) {
+                do {
+                    cantidad = result.getInt(1);
+
+                } while (result.moveToNext());
+            }
+            cantidad = cantidad + 1;
+            //System.out.println("cantidad: " + cantidad);
+            return cantidad;
+        }catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return cantidad;
+    }
+
+    public boolean updateCantidadPedidosEntregados(int repartidor_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        int cantidad_pedido = cantidadPedidos();
+
+        cv.put("cantidad_pedido", String.valueOf(cantidad_pedido));
+        System.out.println(cantidad_pedido);
+        String[] args = new String[] {"1"};  // Colocar id repartidor
+        long result = db.update(DataBasePZ.TABLE_NAME_REPARTIDOR, cv, "id_repartidor=?", args);
+        // System.out.println("result: " + result.toString());
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public boolean updatePedidoEntregado(int id_pedido){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("entregado_check", "true");
+        String[] args = new String[] {String.valueOf(id_pedido)};
+        long result = db.update(DataBasePZ.TABLE_NAME_PEDIDO, cv , "id_pedido=?", args);
+        // System.out.println("result: " + result.toString());
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override

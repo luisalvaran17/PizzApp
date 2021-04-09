@@ -12,6 +12,11 @@
         android:title="Mis entregas" />
 
     <item
+        android:id="@+id/navigation_pedidos_repartidor_entregados"
+        android:icon="@drawable/entregados_selector"
+        android:title="Entregados" />
+
+    <item
         android:id="@+id/navigation_localizacion_repartidor"
         android:icon="@drawable/mapa_selector"
         android:title="Localización" />

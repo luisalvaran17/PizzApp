@@ -12,11 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
 
@@ -24,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText etEmailLogin, etContrasenaLogin;
 
     LinearLayout loginLayout;
-
+    DatabaseReference database;
     //Variables de los datos a ingresar
 
     String email = "";
@@ -36,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
 
+        database = FirebaseDatabase.getInstance().getReference();
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
@@ -112,11 +119,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(irHome);
     }
 
+    private void showHomeRepartidor(String correo_repartidor){
+        Intent irHome = new Intent(this, ActivityBarRepartidor.class);
+        irHome.addFlags(irHome.FLAG_ACTIVITY_CLEAR_TOP | irHome.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(irHome);
+    }
+
 
     @Override
     public void onComplete(@NonNull Task<AuthResult> task) {
         if(task.isSuccessful()){
-            showHomeCliente(etEmailLogin.getText().toString());
+            database.child("Users").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+
+                        if (snapshot.child("Clientes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Correo").getValue() != null) {
+                            String correo_cliente = snapshot.child("Clientes").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Correo").getValue().toString();
+
+                            if (correo_cliente.equals(email)) {
+                                showHomeCliente(etEmailLogin.getText().toString());
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Usuario Cliente no registrado", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else if (snapshot.child("Repartidores").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Correo").getValue() != null) {
+                            String correo_repartidor = snapshot.child("Repartidores").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Correo").getValue().toString();
+                            System.out.println("entra");
+                            if (correo_repartidor.equals(email)) {
+                                showHomeRepartidor(etEmailLogin.getText().toString());
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Usuario Repartidor no registrado", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            // showHomeCliente(etEmailLogin.getText().toString());
         }else{
             showAlert();
         }
