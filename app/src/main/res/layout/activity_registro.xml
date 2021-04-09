@@ -11,9 +11,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        app:srcCompat="@mipmap/ic_launcher_foreground"
+        app:srcCompat="@drawable/logo_principal"
+        android:layout_marginBottom="30sp"
         android:layout_width="match_parent"
-        android:layout_height="200sp" />
+        android:layout_height="140sp" />
 
     <TextView
         android:layout_width="match_parent"

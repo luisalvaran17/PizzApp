@@ -13,8 +13,9 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="200sp"
-        app:srcCompat="@mipmap/ic_launcher_foreground" />
+        android:layout_height="140sp"
+        android:layout_marginBottom="30sp"
+        app:srcCompat="@drawable/logo_principal" />
 
 
     <TextView
