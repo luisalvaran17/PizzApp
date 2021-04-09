@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,10 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
 
-    Button btnLogin;
+    Button btnLogin, btnGoogle;
     EditText etEmailLogin, etContrasenaLogin;
 
-    Bundle data;
+    LinearLayout loginLayout;
 
     //Variables de los datos a ingresar
 
@@ -39,6 +42,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         etEmailLogin = findViewById(R.id.etEmailLogin);
         etContrasenaLogin = findViewById(R.id.etContrasenaLogin);
+
+        loginLayout = findViewById(R.id.loginLayout);
+
+        //Google
+
+
+        SharedPreferences preferences = getSharedPreferences("datos_user", Context.MODE_PRIVATE);
+        String user = preferences.getString("user", null);
+
+        if (user != null){
+            loginLayout.setVisibility(View.GONE);
+            showHomeCliente(user);
+        }
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loginLayout.setVisibility(View.VISIBLE);
     }
 
     public void irRegistro(View view) {
@@ -88,10 +112,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void showHomeCliente(String correo_cliente){
         Intent irHome = new Intent(this, ActivityBarCliente.class);
-
-        //No se porque no deja colocar estos datos
-        //data.putString("correo_cliente", etEmailLogin.getText().toString());
-        //irHome.putExtras(data);
         irHome.addFlags(irHome.FLAG_ACTIVITY_CLEAR_TOP | irHome.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(irHome);
     }

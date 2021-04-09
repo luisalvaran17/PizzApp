@@ -10,11 +10,17 @@ import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistroActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
     
@@ -30,6 +36,9 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     String nombre = "";
     String telefono = "";
     String direccion = "";
+
+
+    DatabaseReference dataBase;
 
 
     @Override
@@ -48,6 +57,9 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
         etEmail = findViewById(R.id.etEmail);
         etContrasena = findViewById(R.id.etContrasena);
         etConfirmarContrasena = findViewById(R.id.etConfirmarContrasena);
+
+        dataBase = FirebaseDatabase.getInstance().getReference();
+
     }
 
     @Override
@@ -58,7 +70,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
         confirmarcontrasena = etConfirmarContrasena.getText().toString();
         nombre = etNombre.getText().toString();
         telefono = etTelefono.getText().toString();
-        direccion = etDireccion.getText().toString();
+        direccion = etDireccion.getText().toString() + ", Tuluá, Valle del Cauca";
 
 
         if(!email.isEmpty() || !contrasena.isEmpty() || !confirmarcontrasena.isEmpty() || !nombre.isEmpty() || !telefono.isEmpty() || !direccion.isEmpty() ){
@@ -140,7 +152,27 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onComplete(@NonNull Task<AuthResult> task) {
         if(task.isSuccessful()){
-            showHomeCliente(etEmail.getText().toString());
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("Nombre",nombre);
+            map.put("Correo", email);
+            map.put("Telefono", telefono);
+            map.put("Direccion", direccion);
+            map.put("Contraseña", contrasena);
+
+            String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            dataBase.child("Users").child("Clientes").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task2) {
+                    if(task2.isSuccessful()){
+                        showHomeCliente(etEmail.getText().toString());
+                    }
+                    else{
+                        Toast.makeText(RegistroActivity.this, "No se pudo registrar los datos en la DB", Toast.LENGTH_SHORT);
+                    }
+                }
+            });
         }else{
             showAlert();
         }
