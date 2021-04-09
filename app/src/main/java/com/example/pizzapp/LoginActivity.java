@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String user = preferences.getString("user", null);
 
         if (user != null){
-            loginLayout.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.INVISIBLE);
             showHomeCliente(user);
         }
 
@@ -124,5 +124,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }else{
             showAlert();
         }
+    }
+
+    public void irResetContrasena(View view) {
+        Intent irHome = new Intent(this, resetContrasenaActivity.class);
+        irHome.addFlags(irHome.FLAG_ACTIVITY_CLEAR_TOP | irHome.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(irHome);
     }
 }
