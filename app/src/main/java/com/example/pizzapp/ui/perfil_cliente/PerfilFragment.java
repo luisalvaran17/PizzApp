@@ -138,6 +138,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
                 FirebaseAuth.getInstance().signOut();
                 goLogin();
+                break;
 
             case R.id.btnConfirmarContrasena:
 
@@ -145,6 +146,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                 contrasena_nueva = etNuevaContrasena.getText().toString();
 
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
                 if(!contrasena_antigua.isEmpty() && !contrasena_nueva.isEmpty()){
                     if (contrasena_nueva.length() >= 6){
@@ -159,6 +161,8 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                                             contraMap.put("Contraseña", contrasena_nueva);
                                             database.child("Users").child("Clientes").child(id).updateChildren(contraMap);
                                             showAler6();
+                                            etContrasenaActual.setText("");
+                                            etNuevaContrasena.setText("");
                                         }
                                         else {
                                             showAler5();
@@ -183,10 +187,14 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                 }else {
                     showAlert1();
                 }
+                break;
             case  R.id.btnCancelar:
 
                 etContrasenaActual.setText("");
                 etNuevaContrasena.setText("");
+                break;
+
+            default: break;
         }
 
 

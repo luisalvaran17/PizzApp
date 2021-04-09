@@ -51,19 +51,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SharedPreferences preferences = getSharedPreferences("datos_user", Context.MODE_PRIVATE);
         String user = preferences.getString("user", null);
 
+
         if (user != null){
             loginLayout.setVisibility(View.INVISIBLE);
             showHomeCliente(user);
         }
 
-
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        loginLayout.setVisibility(View.VISIBLE);
-    }
+
 
     public void irRegistro(View view) {
         Intent ir = new Intent(this, RegistroActivity.class);
