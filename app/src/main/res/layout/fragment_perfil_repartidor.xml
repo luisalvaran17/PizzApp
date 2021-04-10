@@ -1,24 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     tools:context=".ui.perfil_repartidor.PerfilRepartidorFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="perfil"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre:" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Correo:" />
+
+
+                <TextView
+                    android:id="@+id/tvPedidos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cantidad de pedidos:" />
+
+                <Button
+                    android:id="@+id/btnCerrarSesion"
+                    android:layout_width="219dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="50dp"
+                    android:drawableLeft="@drawable/logout"
+                    android:drawableTint="@color/white"
+                    android:text="Cerrar Sesión"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/tvCalificacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Calificación de la App" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:progressTint="@color/red_main"
+                    android:rating="0" />
+
+                <TextView
+                    android:id="@+id/tvCambiarContrasena"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30sp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Cambiar Contraseña"
+                    android:textColor="@color/red_main" />
+
+                <EditText
+                    android:id="@+id/etContrasenaActual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+
+                    android:ems="10"
+                    android:hint="Contraseña Actual"
+                    android:inputType="textPassword"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etNuevaContrasena"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Nueva contraseña (min 6 caracteres)"
+                    android:inputType="textPassword"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnConfirmarContrasena"
+                        android:layout_width="157dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30sp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="80dp"
+                        android:drawableLeft="@drawable/check_circle_outline"
+                        android:drawableTint="@color/white"
+                        android:text="Confirmar"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/btnCancelar"
+                        android:layout_width="157dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30sp"
+                        android:layout_marginBottom="80dp"
+                        android:drawableLeft="@drawable/close_circle_outline"
+                        android:drawableTint="@color/white"
+                        android:text="Cancelar"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
