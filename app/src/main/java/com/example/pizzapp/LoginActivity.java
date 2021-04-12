@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -36,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
+
 
     Button btnLogin, btnGoogle;
     EditText etEmailLogin, etContrasenaLogin;
@@ -78,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         SharedPreferences preferences = getSharedPreferences("datos_user", Context.MODE_PRIVATE);
         String user = preferences.getString("user", null);
-
 
     }
 

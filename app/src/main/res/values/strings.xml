@@ -1,4 +1,5 @@
 <resources>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="app_name">PizzApp</string>
     <string name="WelcomeMessage">Bienvenido</string>
     <string name="LoginMessage">Iniciar sesión</string>
@@ -34,4 +35,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="detalles_pedido">Detalles</string>
     <string name="asignarse_entrega">Asignarse entrega</string>
+    <string name="nombre_pizza">Familiar</string>
+    <string name="detalles_precio">$-------</string>
 </resources>

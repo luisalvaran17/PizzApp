@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.pizzapp.ui.home_cliente.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistroActivity extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<AuthResult> {
-    
+
     Button btnRegistrar;
     EditText etEmail, etContrasena, etConfirmarContrasena, etNombre, etTelefono, etDireccion;
     Bundle data = new Bundle();
@@ -37,9 +38,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
     String telefono = "";
     String direccion = "";
 
-
     DatabaseReference dataBase;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +128,6 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
         dialog.show();
     }
 
-
-
     private void showHomeCliente(String correo_cliente){
         Intent irHome = new Intent(this, ActivityBarCliente.class);
         data.putString("nombre_usuario", etNombre.getText().toString());
@@ -141,7 +138,6 @@ public class RegistroActivity extends AppCompatActivity implements View.OnClickL
         irHome.addFlags(irHome.FLAG_ACTIVITY_CLEAR_TOP | irHome.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(irHome);
     }
-
 
     public void irInicioSesion(View view) {
         Intent ir = new Intent(this, LoginActivity.class);

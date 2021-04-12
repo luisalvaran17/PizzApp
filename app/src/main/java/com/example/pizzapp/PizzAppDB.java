@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.sql.Date;
+
 public class PizzAppDB extends SQLiteOpenHelper {
     public PizzAppDB(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -80,7 +82,6 @@ public class PizzAppDB extends SQLiteOpenHelper {
                 DataBasePZ.COLUMN_TIPO_PIZZA + " TEXT," +
                 DataBasePZ.COLUMN_PRECIO_PROD + " INTEGER," +
                 DataBasePZ.COLUMN_DESCUENTO + " INTEGER," +
-                DataBasePZ.COLUMN_DISPONIBILIDAD + " INTEGER," +
                 DataBasePZ.COLUMN_CANT_PORCIONES + " INTEGER," +
                 DataBasePZ.COLUMN_ID_PIZZERIA_PRODUCTO + " INTEGER,"+
                     "FOREIGN KEY(" + DataBasePZ.COLUMN_ID_PIZZERIA_PRODUCTO + ") REFERENCES " +
@@ -180,6 +181,50 @@ public class PizzAppDB extends SQLiteOpenHelper {
         }
     }
 
+    // INSERTAR PEDIDOS
+    public boolean insertPedido(Date fecha_pedido, int cantidad_producto,int total_pago,
+                                String direccion_pedido,String tel_cliente, String entregado_check,
+                                String asignado_check, int id_usuario,int id_producto){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("fecha_pedido", String.valueOf(fecha_pedido));
+        contentValues.put("cant_producto", cantidad_producto);
+        contentValues.put("total_pago", total_pago);
+        contentValues.put("direccion_pedido", direccion_pedido);
+        contentValues.put("tel_cliente", tel_cliente);
+        contentValues.put("entregado_check", entregado_check);
+        contentValues.put("asignado_check", asignado_check);
+        contentValues.put("id_usuario", id_usuario);
+        contentValues.put("id_producto", id_producto);
+        long result = db.insert("pedido", null, contentValues);
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    // INSERT PRODUCTO
+    public boolean insertProducto(int id_producto, String nombre_prod, String tipo_pizza,
+                                  String precio_prod, String disponibilidad,
+                                  String cant_porciones,String id_pizzeria){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id_producto", id_producto);
+        contentValues.put("nombre_prod", nombre_prod);
+        contentValues.put("tipo_pizza", tipo_pizza);
+        contentValues.put("precio_prod", precio_prod);
+        contentValues.put("disponibilidad", disponibilidad);
+        contentValues.put("cant_porciones", cant_porciones);
+        contentValues.put("id_pizzeria", id_pizzeria);
+        long result = db.insert("producto", null, contentValues);
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     // INSERT USUARIO
     public boolean insertUsuario(String id_usuario, String nombre, String contrasena, String correo){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -225,12 +270,19 @@ public class PizzAppDB extends SQLiteOpenHelper {
         }
     }
 
-
     public Cursor getPedidosNoAsignados(){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = new String[] {"false"};
         Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "asignado_check=?", args, null, null,null);
         // System.out.println("result: " + result.toString());
+        return result;
+    }
+
+    //CONSULTA PEDIDOS
+    public Cursor getPedidos(String id_uduario){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {id_uduario};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "id_usuario=?", args, null, null,null);
         return result;
     }
 
