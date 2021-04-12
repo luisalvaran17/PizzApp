@@ -40,15 +40,16 @@ public class HomeFragment extends Fragment  {
     private ImageSwitcher imageSwitcher;
     private int[] galeria = { R.drawable.vegetariana, R.drawable.ranchera,
             R.drawable.hawaii,R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
-    private int posicion;
+    private int posicion=0;
     private static final int DURACION = 9000;
     private Timer timer = null;
 
+    public ArrayList<String> arregloNombres = new ArrayList<String>();
+    public ArrayList<String> arregloPrecios = new ArrayList<String>();
+
     //Arreglos para info de API
     public ArrayList<Integer> arregloId = new ArrayList<Integer>();
-    public ArrayList<String> arregloNombres = new ArrayList<String>();
     public ArrayList<String> arregloTipo = new ArrayList<String>();
-    public ArrayList<String> arregloPrecios = new ArrayList<String>();
     public ArrayList<String> arregloDisponibilidad = new ArrayList<String>();
     public ArrayList<String> arregloCantidad = new ArrayList<String>();
     public ArrayList<String> arregloIdPizzeria = new ArrayList<String>();
@@ -96,17 +97,13 @@ public class HomeFragment extends Fragment  {
 
                             /*
                             int id_producto = jsonObject.getInt("id_producto");
-                            String nombre_producto = jsonObject.getString("nombre_producto");
                             String tipo_producto = jsonObject.getString("tipo_pizza");
-                            String precio_producto = jsonObject.getString("precio_producto");
                             String disponilidad=jsonObject.getString("disponibilidad");
                             String cant_porciones=jsonObject.getString("cant_porciones");
                             String id_pizzeria=jsonObject.getString("id_pizzeria");
 
                             arregloId.add(id_producto);
-                            arregloNombres.add("  "+nombre_producto);
                             arregloTipo.add(tipo_producto);
-                            arregloPrecios.add("$ "+precio_producto);
                             arregloDisponibilidad.add(disponilidad);
                             arregloCantidad.add(cant_porciones);
                             arregloIdPizzeria.add(id_pizzeria);*/
@@ -144,7 +141,6 @@ public class HomeFragment extends Fragment  {
         Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
         imageSwitcher.setInAnimation(fadeIn);
         imageSwitcher.setOutAnimation(fadeOut);
-
         return root;
     }
 
