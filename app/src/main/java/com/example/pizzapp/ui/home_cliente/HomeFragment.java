@@ -1,5 +1,6 @@
 package com.example.pizzapp.ui.home_cliente;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ViewSwitcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,6 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.pizzapp.HomeMenuFragment;
+import com.example.pizzapp.PedidoPendienteFragment;
 import com.example.pizzapp.PizzAppDB;
 import com.example.pizzapp.R;
 
@@ -41,7 +45,7 @@ public class HomeFragment extends Fragment  {
     private int[] galeria = { R.drawable.vegetariana, R.drawable.ranchera,
             R.drawable.hawaii,R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
     private int posicion;
-    private static final int DURACION = 90000;
+    private static final int DURACION = 9000;
     private Timer timer = null;
 
     PizzAppDB db;
@@ -92,8 +96,8 @@ public class HomeFragment extends Fragment  {
                             String cant_porciones  = jsonObject.getString("cantidad_porciones");
                             String id_pizzeria = jsonObject.getString("id_pizzeria");
 
-                            db.insertProducto(id_producto,nombre_producto,tipo_pizza,precio_producto
-                                    ,cant_porciones,id_pizzeria);
+                               /* db.insertProducto(id_producto,nombre_producto,tipo_pizza,precio_producto
+                                        ,cant_porciones,id_pizzeria);*/
 
                             arregloNombres.add("  "+nombre_producto);
                             arregloPrecios.add("$ "+precio_producto);
@@ -157,4 +161,59 @@ public class HomeFragment extends Fragment  {
         }, 0, DURACION);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        HomeMenuFragment ArrayFragments [] = new HomeMenuFragment[1000];
+        Cursor c = getProductos();
+        HomeMenuFragment homeMenuFragment;
+
+        int contador = 0;
+        if (c.moveToFirst()) {
+            //Recorremos el cursor hasta que no haya más registros
+            do {
+                int id_producto = c.getInt(0);
+                homeMenuFragment = new HomeMenuFragment();
+                String id = String.valueOf(id_producto);
+                transaction.add(R.id.linearMenu, homeMenuFragment, id);
+                ArrayFragments[contador] = homeMenuFragment;
+                contador++;
+            } while (c.moveToNext());
+
+            for (int i=0; i<ArrayFragments.length; i++) {
+                if(ArrayFragments[i] != null) {
+                    //System.out.println("Array fragments: " + ArrayFragments[i]);
+                }
+            }
+            System.out.println(contador);
+            if (contador != 0){
+                //textViewVacio.setText(" ");
+            }
+        }
+        transaction.commit();
+    }
+
+    public Cursor getProductos() {
+        db = new PizzAppDB(getContext());
+        Cursor c = db.getProductos();
+        try {
+            int cantidad_pedidos_pendientes = 0;
+            //Nos aseguramos de que existe al menos un registro
+            if (c.moveToFirst()) {
+                //Recorremos el cursor hasta que no haya más registros
+                do {
+                    int id_producto = c.getInt(0);
+                    String nombre_producto = c.getString(1);
+                    String precio_producto = c.getString(3);
+                    cantidad_pedidos_pendientes++;
+                } while (c.moveToNext());
+                return c;
+            }
+        }catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return c;
+    }
 }

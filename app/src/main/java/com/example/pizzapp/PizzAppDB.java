@@ -182,12 +182,12 @@ public class PizzAppDB extends SQLiteOpenHelper {
     }
 
     // INSERTAR PEDIDOS
-    public boolean insertPedido(Date fecha_pedido, int cantidad_producto,int total_pago,
+    public boolean insertPedido(String fecha_pedido, String cantidad_producto,String total_pago,
                                 String direccion_pedido,String tel_cliente, String entregado_check,
-                                String asignado_check, int id_usuario,int id_producto){
+                                String asignado_check, String id_usuario,int id_producto){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("fecha_pedido", String.valueOf(fecha_pedido));
+        contentValues.put("fecha_pedido", fecha_pedido);
         contentValues.put("cant_producto", cantidad_producto);
         contentValues.put("total_pago", total_pago);
         contentValues.put("direccion_pedido", direccion_pedido);
@@ -277,6 +277,15 @@ public class PizzAppDB extends SQLiteOpenHelper {
         return result;
     }
 
+    //PRODUCTOS
+    public Cursor getProductos(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_PROD, null , null, args, null, null,null);
+        // System.out.println("result: " + result.toString());
+        return result;
+    }
+
     //CONSULTA PEDIDOS
     public Cursor getPedidos(String id_uduario){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -307,6 +316,15 @@ public class PizzAppDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = new String[] {id};
         Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "id_pedido=?", args, null, null,null);
+        // System.out.println("result: " + result.toString());
+        return result;
+    }
+
+    //CLIENTE
+    public Cursor getCliente(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {id};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_CLIENTE, null , "id_cliente=?", args, null, null,null);
         // System.out.println("result: " + result.toString());
         return result;
     }
