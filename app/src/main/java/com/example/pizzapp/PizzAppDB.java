@@ -206,7 +206,7 @@ public class PizzAppDB extends SQLiteOpenHelper {
 
     // INSERT PRODUCTO
     public boolean insertProducto(int id_producto, String nombre_prod, String tipo_pizza,
-                                  String precio_prod, String disponibilidad,
+                                  String precio_prod,
                                   String cant_porciones,String id_pizzeria){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -214,7 +214,6 @@ public class PizzAppDB extends SQLiteOpenHelper {
         contentValues.put("nombre_prod", nombre_prod);
         contentValues.put("tipo_pizza", tipo_pizza);
         contentValues.put("precio_prod", precio_prod);
-        contentValues.put("disponibilidad", disponibilidad);
         contentValues.put("cant_porciones", cant_porciones);
         contentValues.put("id_pizzeria", id_pizzeria);
         long result = db.insert("producto", null, contentValues);

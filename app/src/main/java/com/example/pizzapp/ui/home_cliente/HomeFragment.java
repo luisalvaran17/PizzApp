@@ -40,19 +40,14 @@ public class HomeFragment extends Fragment  {
     private ImageSwitcher imageSwitcher;
     private int[] galeria = { R.drawable.vegetariana, R.drawable.ranchera,
             R.drawable.hawaii,R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
-    private int posicion=0;
-    private static final int DURACION = 9000;
+    private int posicion;
+    private static final int DURACION = 90000;
     private Timer timer = null;
+
+    PizzAppDB db;
 
     public ArrayList<String> arregloNombres = new ArrayList<String>();
     public ArrayList<String> arregloPrecios = new ArrayList<String>();
-
-    //Arreglos para info de API
-    public ArrayList<Integer> arregloId = new ArrayList<Integer>();
-    public ArrayList<String> arregloTipo = new ArrayList<String>();
-    public ArrayList<String> arregloDisponibilidad = new ArrayList<String>();
-    public ArrayList<String> arregloCantidad = new ArrayList<String>();
-    public ArrayList<String> arregloIdPizzeria = new ArrayList<String>();
 
     //link mocky pizzas
     String url = "https://run.mocky.io/v3/8479739c-e5f6-4919-b7e9-655b7a668fae";
@@ -86,27 +81,23 @@ public class HomeFragment extends Fragment  {
                 public void onResponse(JSONObject response) {
                     try {
                         JSONArray jsonArray = response.getJSONArray("Pizzas");
+                        db=new PizzAppDB(getContext());
                         for(int i=0; i<jsonArray.length();i++) {
 
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String nombre_producto = jsonObject.getString("nombre_producto");
                             String precio_producto = jsonObject.getString("precio_producto");
+                            int id_producto = jsonObject.getInt("id_producto");
+                            String tipo_pizza = jsonObject.getString("tipo_pizza");
+                            String cant_porciones  = jsonObject.getString("cantidad_porciones");
+                            String id_pizzeria = jsonObject.getString("id_pizzeria");
+
+                            db.insertProducto(id_producto,nombre_producto,tipo_pizza,precio_producto
+                                    ,cant_porciones,id_pizzeria);
 
                             arregloNombres.add("  "+nombre_producto);
                             arregloPrecios.add("$ "+precio_producto);
 
-                            /*
-                            int id_producto = jsonObject.getInt("id_producto");
-                            String tipo_producto = jsonObject.getString("tipo_pizza");
-                            String disponilidad=jsonObject.getString("disponibilidad");
-                            String cant_porciones=jsonObject.getString("cant_porciones");
-                            String id_pizzeria=jsonObject.getString("id_pizzeria");
-
-                            arregloId.add(id_producto);
-                            arregloTipo.add(tipo_producto);
-                            arregloDisponibilidad.add(disponilidad);
-                            arregloCantidad.add(cant_porciones);
-                            arregloIdPizzeria.add(id_pizzeria);*/
                         }
                         startSlider(arregloNombres,arregloPrecios,tv_nombrePizza,tv_precioPizza);
                     } catch (JSONException e) {
