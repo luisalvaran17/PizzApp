@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeMenuFragment#newInstance} factory method to
@@ -128,6 +131,7 @@ public class HomeMenuFragment extends Fragment {
         TextView textViewPrecioMenu=v.findViewById(R.id.textViewTotalPrecioMenu);
         TextView textViewNombreProducto=v.findViewById(R.id.textViewNombreProducto);
         ImageView imageViewPlus = v.findViewById(R.id.imageIconRealizarPedido);
+        ImageView imageIconAsignarFavorito = v.findViewById(R.id.imageIconAsignarFavorito);
         ImageView imageViewPizza = v.findViewById(R.id.imageView1);
         int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
                 R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
@@ -161,10 +165,20 @@ public class HomeMenuFragment extends Fragment {
             e.printStackTrace();
         }
 
+        imageIconAsignarFavorito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Se ha añadido a favoritos", Toast.LENGTH_LONG).show();
+            }
+        });
+
         // Image view Plus icon, asignación tag para diferenciar los los icons plus
         imageViewPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String pattern = "yyyy-MM-dd HH:mm";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                String date = simpleDateFormat.format(new Date());
                 //Toast.makeText(getContext(), imageViewPlus.getTag().toString(), Toast.LENGTH_SHORT).show();
                 db = new PizzAppDB(getContext());
                 Cursor p = getProductos();
@@ -194,12 +208,19 @@ public class HomeMenuFragment extends Fragment {
                             telCliente = cliente.getString(2);
                         } while (cliente.moveToNext());
                     }
-                    db.insertPedido("21-04-12","1",totalPago,direccionCliente,telCliente,"false","false",id,id_producto);
-                    imageViewPlus.setEnabled(false);
+                    try{
+                        db.insertPedido(date,"1",totalPago,direccionCliente,telCliente,"false","false",id,id_producto);
+                        imageViewPlus.setEnabled(false);
+                        Toast.makeText(getContext(), "Se ha realizado su pedido", Toast.LENGTH_LONG).show();
+                    }catch (Exception e){
+                        e.getMessage();
+                        Toast.makeText(getContext(), "No se ha podido realizar su pedido, intente de nuevo", Toast.LENGTH_LONG).show();
+                    }
+
                 }catch (Exception e) {
                     e.getMessage();
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "No se pudo asignar el pedido", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "No se pudo asignar el pedido", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -230,4 +251,5 @@ public class HomeMenuFragment extends Fragment {
         }
         return c;
     }
+
 }

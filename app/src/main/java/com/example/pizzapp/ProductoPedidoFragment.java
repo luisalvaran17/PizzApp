@@ -150,6 +150,7 @@ public class ProductoPedidoFragment extends Fragment {
             if (c.moveToFirst()) {
                 do {
                     id_pedido = c.getInt(0);
+                    String fecha = c.getString(1);
                     String cantidad_porciones = c.getString(2);
                     String total_pago = c.getString(3);
                     String tel = c.getString(5);
@@ -161,9 +162,7 @@ public class ProductoPedidoFragment extends Fragment {
                         textViewPorciones.setText("Cantidad: " + cantidad_porciones);
                         textViewTel.setText("Teléfono: " + tel);
                         textViewTotalPrecio.setText("$ " + total_pago);
-                        String[] parts = direccion.split(",");
-                        String direccion_simplificada = parts[0]; //
-                        textViewDireccion.setText("Dirección: " + direccion_simplificada);
+                        textViewDireccion.setText("Fecha: " + fecha);
                         imageViewPizza.setImageResource(galeria[id_producto-1]);
                         textViewIdPedido.setText("# " + id_pedido);
                     }
