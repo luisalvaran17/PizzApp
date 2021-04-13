@@ -180,6 +180,7 @@ public class HomeMenuFragment extends Fragment {
                             if(id_producto==Integer.parseInt(imageViewPlus.getTag().toString())){
                                 id_producto=p.getInt(0);
                                 totalPago = p.getString(3);
+                                break;
                             }
                         } while (p.moveToNext());
                     }
