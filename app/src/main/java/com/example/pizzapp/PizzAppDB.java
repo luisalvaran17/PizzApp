@@ -286,10 +286,19 @@ public class PizzAppDB extends SQLiteOpenHelper {
         return result;
     }
 
+
+
     //CONSULTA PEDIDOS
     public Cursor getPedidos(String id_uduario){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = new String[] {id_uduario};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "id_usuario=?", args, null, null,null);
+        return result;
+    }
+
+    public Cursor getIdPedidosProducto(String id_usuario){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {id_usuario};
         Cursor result = db.query(DataBasePZ.TABLE_NAME_PEDIDO, null , "id_usuario=?", args, null, null,null);
         return result;
     }

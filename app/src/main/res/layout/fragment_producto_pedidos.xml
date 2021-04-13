@@ -66,6 +66,17 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewPorciones" />
 
         <TextView
+            android:id="@+id/textViewIdsProductos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/asap_regular"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
             android:id="@+id/textViewDireccion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

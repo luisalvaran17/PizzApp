@@ -128,13 +128,16 @@ public class HomeMenuFragment extends Fragment {
         TextView textViewPrecioMenu=v.findViewById(R.id.textViewTotalPrecioMenu);
         TextView textViewNombreProducto=v.findViewById(R.id.textViewNombreProducto);
         ImageView imageViewPlus = v.findViewById(R.id.imageIconRealizarPedido);
+        ImageView imageViewPizza = v.findViewById(R.id.imageView1);
+        int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
+                R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
 
         newInstanceText(textViewPrecioMenu,textViewNombreProducto);
         newInstanceImage(imageViewPlus);
 
         db = new PizzAppDB(getContext());
 
-        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Cursor c = db.getProductos();
         int id_producto = 0;
@@ -149,6 +152,7 @@ public class HomeMenuFragment extends Fragment {
                     if(id_producto == Integer.parseInt(textViewPrecioMenu.getTag().toString())){
                         textViewPrecioMenu.setText("$ " + precio);
                         textViewNombreProducto.setText(" " + nombre);
+                        imageViewPizza.setImageResource(galeria[id_producto-1]);
                     }
                 } while (c.moveToNext());
             }

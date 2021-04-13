@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +33,8 @@ public class ProductoPedidoFragment extends Fragment {
     public static TextView texts_view_array [] = new TextView[100];
     public static int contador_text_view = 0;
     public static int contador2_text_view = 0;
+    public static int contador = 0;
+
 
     public PizzAppDB db;
 
@@ -101,7 +106,6 @@ public class ProductoPedidoFragment extends Fragment {
             contador_text_view++;
         }
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,15 +128,18 @@ public class ProductoPedidoFragment extends Fragment {
         TextView textViewDireccion = v.findViewById(R.id.textViewDireccion);
         TextView textViewIdPedido = v.findViewById(R.id.textViewIdPedido);
         TextView textViewTotalPrecio = v.findViewById(R.id.textViewTotalPrecio);
-
+        ImageView imageViewPizza = v.findViewById(R.id.imageView1);
+        int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
+                R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
         newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido, textViewTotalPrecio);
         db = new PizzAppDB(getContext());
+        int[] arrayIdsProd = new int[100];
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        Cursor p = db.getIdPedidosProducto(id);
         Cursor c = db.getPedidos(id);
         int id_pedido = 0;
-
+        int id_producto = 0;
         try {
             if (c.moveToFirst()) {
                 do {
@@ -143,7 +150,7 @@ public class ProductoPedidoFragment extends Fragment {
                     String direccion = c.getString(4);
 
 
-                    if(id_pedido == Integer.parseInt(textViewPorciones.getTag().toString())){
+                    if (id_pedido == Integer.parseInt(textViewPorciones.getTag().toString())) {
                         textViewPorciones.setText("Cantidad: " + cantidad_porciones);
                         textViewTel.setText("Teléfono: " + tel);
                         textViewTotalPrecio.setText("$ " + total_pago);
@@ -153,6 +160,7 @@ public class ProductoPedidoFragment extends Fragment {
 
                         textViewIdPedido.setText("# " + id_pedido);
                     }
+
                 } while (c.moveToNext());
             }
         }catch (Exception e) {
