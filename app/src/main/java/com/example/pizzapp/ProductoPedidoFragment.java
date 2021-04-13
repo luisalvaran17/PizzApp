@@ -11,14 +11,14 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PedidosEntregadosFragment#} factory method to
+ * Use the {@link ProductoPedidoFragment#} factory method to
  * create an instance of this fragment.
  */
-public class PedidosEntregadosFragment extends Fragment {
+public class ProductoPedidoFragment extends Fragment {
 
     public static String view;
     public static int botones [] = new int[100];
@@ -32,6 +32,7 @@ public class PedidosEntregadosFragment extends Fragment {
     public static int contador2_text_view = 0;
 
     public PizzAppDB db;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,7 +42,7 @@ public class PedidosEntregadosFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PedidosEntregadosFragment() {
+    public ProductoPedidoFragment() {
         // Required empty public constructor
     }
 
@@ -116,16 +117,20 @@ public class PedidosEntregadosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_entregados, container, false);
+        View v = inflater.inflate(R.layout.fragment_producto_pedidos, container, false);
+
         TextView textViewPorciones = v.findViewById(R.id.textViewPorciones);
         TextView textViewTel = v.findViewById(R.id.textViewTelf);
         TextView textViewDireccion = v.findViewById(R.id.textViewDireccion);
         TextView textViewIdPedido = v.findViewById(R.id.textViewIdPedido);
         TextView textViewTotalPrecio = v.findViewById(R.id.textViewTotalPrecio);
+
         newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido, textViewTotalPrecio);
         db = new PizzAppDB(getContext());
 
-        Cursor c = db.getPedidosEntregados();
+        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        Cursor c = db.getPedidos(id);
         int id_pedido = 0;
 
         try {
@@ -141,7 +146,6 @@ public class PedidosEntregadosFragment extends Fragment {
                     if(id_pedido == Integer.parseInt(textViewPorciones.getTag().toString())){
                         textViewPorciones.setText("Cantidad: " + cantidad_porciones);
                         textViewTel.setText("Teléfono: " + tel);
-
                         textViewTotalPrecio.setText("$ " + total_pago);
                         String[] parts = direccion.split(",");
                         String direccion_simplificada = parts[0]; //
@@ -161,7 +165,8 @@ public class PedidosEntregadosFragment extends Fragment {
 
     public Cursor getPedidosAsignados() {
         db = new PizzAppDB(getContext());
-        Cursor c = db.getPedidosEntregados();
+        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Cursor c = db.getPedidos(id);
         try {
             int cantidad_pedidos_pendientes = 0;
             //Nos aseguramos de que existe al menos un registro
@@ -186,4 +191,5 @@ public class PedidosEntregadosFragment extends Fragment {
         }
         return c;
     }
+
 }

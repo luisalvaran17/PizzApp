@@ -38,13 +38,13 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeFragment extends Fragment  {
+public class HomeFragment extends Fragment {
 
     TextView tv_nombrePizza, tv_precioPizza;
 
     private ImageSwitcher imageSwitcher;
-    private int[] galeria = { R.drawable.vegetariana, R.drawable.ranchera,
-            R.drawable.hawaii,R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
+    private int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
+            R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
     private int posicion;
     private static final int DURACION = 9000;
     private Timer timer = null;
@@ -80,52 +80,50 @@ public class HomeFragment extends Fragment  {
          */
         RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
         JsonObjectRequest StringRequest = new JsonObjectRequest(
-            url,null,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        JSONArray jsonArray = response.getJSONArray("Pizzas");
-                        db=new PizzAppDB(getContext());
-                        for(int i=0; i<jsonArray.length();i++) {
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("Pizzas");
+                            db = new PizzAppDB(getContext());
+                            for (int i = 0; i < jsonArray.length(); i++) {
 
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String nombre_producto = jsonObject.getString("nombre_producto");
-                            String precio_producto = jsonObject.getString("precio_producto");
-                            int id_producto = jsonObject.getInt("id_producto");
-                            String tipo_pizza = jsonObject.getString("tipo_pizza");
-                            String cant_porciones  = jsonObject.getString("cantidad_porciones");
-                            String id_pizzeria = jsonObject.getString("id_pizzeria");
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String nombre_producto = jsonObject.getString("nombre_producto");
+                                String precio_producto = jsonObject.getString("precio_producto");
+                                int id_producto = jsonObject.getInt("id_producto");
+                                String tipo_pizza = jsonObject.getString("tipo_pizza");
+                                String cant_porciones = jsonObject.getString("cantidad_porciones");
+                                String id_pizzeria = jsonObject.getString("id_pizzeria");
 
                                /* db.insertProducto(id_producto,nombre_producto,tipo_pizza,precio_producto
                                         ,cant_porciones,id_pizzeria);*/
 
-                            arregloNombres.add("  "+nombre_producto);
-                            arregloPrecios.add("$ "+precio_producto);
+                                arregloNombres.add("  " + nombre_producto);
+                                arregloPrecios.add("$ " + precio_producto);
 
+                            }
+                            startSlider(arregloNombres, arregloPrecios, tv_nombrePizza, tv_precioPizza);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        startSlider(arregloNombres,arregloPrecios,tv_nombrePizza,tv_precioPizza);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
                     }
                 }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
-                }
-            }
         );
 
         requestQueue.add(StringRequest);
 
         //ImageSwitcher para el slide de promociones y sus respectivos precios
         imageSwitcher = (ImageSwitcher) root.findViewById(R.id.imageSwitcher);
-        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
-        {
-            public View makeView()
-            {
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            public View makeView() {
                 ImageView imageView = new ImageView(getActivity());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -167,7 +165,7 @@ public class HomeFragment extends Fragment  {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        HomeMenuFragment ArrayFragments [] = new HomeMenuFragment[1000];
+        HomeMenuFragment ArrayFragments[] = new HomeMenuFragment[1000];
         Cursor c = getProductos();
         HomeMenuFragment homeMenuFragment;
 
@@ -183,13 +181,13 @@ public class HomeFragment extends Fragment  {
                 contador++;
             } while (c.moveToNext());
 
-            for (int i=0; i<ArrayFragments.length; i++) {
-                if(ArrayFragments[i] != null) {
+            for (int i = 0; i < ArrayFragments.length; i++) {
+                if (ArrayFragments[i] != null) {
                     //System.out.println("Array fragments: " + ArrayFragments[i]);
                 }
             }
             System.out.println(contador);
-            if (contador != 0){
+            if (contador != 0) {
                 //textViewVacio.setText(" ");
             }
         }
@@ -212,7 +210,7 @@ public class HomeFragment extends Fragment  {
                 } while (c.moveToNext());
                 return c;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
         }

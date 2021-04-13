@@ -163,7 +163,7 @@ public class HomeMenuFragment extends Fragment {
             public void onClick(View v) {
                 //Toast.makeText(getContext(), imageViewPlus.getTag().toString(), Toast.LENGTH_SHORT).show();
                 db = new PizzAppDB(getContext());
-                Cursor p = db.getProductos();
+                Cursor p = getProductos();
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 Cursor cliente = db.getCliente(id);
                 String direccionCliente="";
@@ -177,7 +177,7 @@ public class HomeMenuFragment extends Fragment {
                     if (p.moveToFirst()) {
                         do {
                             id_producto = p.getInt(0);
-                            if(id_producto==Integer.parseInt(imageViewPlus.getTag().toString())){
+                            if(id_producto==Integer.parseInt(textViewNombreProducto.getTag().toString())){
                                 id_producto=p.getInt(0);
                                 totalPago = p.getString(3);
                                 break;

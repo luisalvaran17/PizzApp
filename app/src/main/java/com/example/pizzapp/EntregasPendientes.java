@@ -82,7 +82,7 @@ public class EntregasPendientes extends Fragment {
     }
 
     public void newInstanceText(TextView textViewPorciones, TextView textViewTel,
-                                TextView textViewDireccion, TextView textViewIdPedido) {
+                                TextView textViewDireccion, TextView textViewIdPedido, TextView textViewTotalPrecio) {
         Cursor c = getPedidosAsignados();
         text_view[contador_text_view] = contador_text_view;
         texts_view_array[contador_text_view] = textViewPorciones;
@@ -103,6 +103,7 @@ public class EntregasPendientes extends Fragment {
             textViewTel.setTag(ids_pedidos[contador_text_view]);
             textViewDireccion.setTag(ids_pedidos[contador_text_view]);
             textViewIdPedido.setTag(ids_pedidos[contador_text_view]);
+            textViewTotalPrecio.setTag(ids_pedidos[contador_text_view]);
             contador_text_view++;
         }
     }
@@ -128,8 +129,9 @@ public class EntregasPendientes extends Fragment {
         TextView textViewTel = v.findViewById(R.id.textViewTelf);
         TextView textViewDireccion = v.findViewById(R.id.textViewDireccion);
         TextView textViewIdPedido = v.findViewById(R.id.textViewIdPedido);
+        TextView textViewTotalPrecio = v.findViewById(R.id.textViewTotalPrecio);
         newInstanceButton(btnEntregar);
-        newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido);
+        newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido, textViewTotalPrecio);
         db = new PizzAppDB(getContext());
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -142,6 +144,7 @@ public class EntregasPendientes extends Fragment {
                 do {
                     id_pedido = c.getInt(0);
                     String cantidad_porciones = c.getString(2);
+                    String total_pago = c.getString(3);
                     String tel = c.getString(5);
                     String direccion = c.getString(4);
 
@@ -149,7 +152,7 @@ public class EntregasPendientes extends Fragment {
                     if(id_pedido == Integer.parseInt(textViewPorciones.getTag().toString())){
                         textViewPorciones.setText("Cantidad: " + cantidad_porciones);
                         textViewTel.setText("Teléfono: " + tel);
-
+                        textViewTotalPrecio.setText("$ " + total_pago);
                         String[] parts = direccion.split(",");
                         String direccion_simplificada = parts[0]; //
                         textViewDireccion.setText("Dirección: " + direccion_simplificada);

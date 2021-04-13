@@ -47,7 +47,7 @@ public class PerfilRepartidorFragment extends Fragment implements View.OnClickLi
         perfilRepartidorViewModel =
                 new ViewModelProvider(this).get(PerfilRepartidorViewModel.class);
         View root = inflater.inflate(R.layout.fragment_perfil_repartidor, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
+
         perfilRepartidorViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

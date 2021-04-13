@@ -30,12 +30,12 @@ public class PedidosEntregadosRepartidorFragment extends Fragment {
         pedidosEntregadosRepartidorViewModel =
                 new ViewModelProvider(this).get(PedidosEntregadosRepartidorViewModel.class);
         View root = inflater.inflate(R.layout.fragment_pedidos_entregados_repartidor, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
+
         textViewVacio = root.findViewById(R.id.textViewVacio);
         pedidosEntregadosRepartidorViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+
             }
         });
 
