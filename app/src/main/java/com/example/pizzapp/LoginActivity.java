@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     FirebaseAuth.getInstance().signInWithEmailAndPassword(etEmailLogin.getText().toString(),
                             etContrasenaLogin.getText().toString()).addOnCompleteListener(this);
                 }
-                //Pequeño bug: se cierra cuando se le mandan datos con Bundle aquí y en Register
+
                 else {
                     etEmailLogin.setError("Este campo no puede estar vacío");
                     etContrasenaLogin.setError("Este campo no puede estar vacío");
@@ -212,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 }
             });
-            // showHomeCliente(etEmailLogin.getText().toString());
+
         }else{
             showAlert1();
         }

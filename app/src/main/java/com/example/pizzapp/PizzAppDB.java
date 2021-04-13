@@ -338,6 +338,14 @@ public class PizzAppDB extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getEmailContrasenaCliente(String email, String contrasena){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {email, contrasena};
+        Cursor result = db.query(DataBasePZ.TABLE_NAME_USUARIOS, null,"correo_usuario=?", args, null, null, null);
+
+        return  result;
+    }
+
     public boolean updatePedidoAsignado(int id_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -403,6 +411,20 @@ public class PizzAppDB extends SQLiteOpenHelper {
         String[] args = new String[] {String.valueOf(id_pedido)};
         long result = db.update(DataBasePZ.TABLE_NAME_PEDIDO, cv , "id_pedido=?", args);
         // System.out.println("result: " + result.toString());
+        if (result == 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    public boolean updateContrasenaActual(String id_usuario, String contrasenaNueva){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("contrasena_usuario", contrasenaNueva);
+         String[] args = new String[] {id_usuario};
+         long result = db.update(DataBasePZ.TABLE_NAME_USUARIOS, cv, "id_usuarios=?", args);
         if (result == 1){
             return false;
         }else{

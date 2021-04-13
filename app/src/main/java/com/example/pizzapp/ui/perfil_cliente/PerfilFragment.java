@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pizzapp.ActivityBarCliente;
 import com.example.pizzapp.LoginActivity;
+import com.example.pizzapp.PizzAppDB;
 import com.example.pizzapp.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,6 +60,8 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
     EditText etContrasenaActual, etNuevaContrasena;
     RatingBar calificacionEstrellas;
     DatabaseReference database;
+
+    public PizzAppDB db;
 
     //Actualizar contraseña
     String contrasena_antigua = "";
@@ -106,6 +109,8 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
         cantStars = calificacionEstrellas.getRating();
 
+        db = new PizzAppDB(root.getContext());
+
         cargarDatos();
 
 
@@ -140,8 +145,6 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                     tvDireccion.setText("Dirección: " + direccionSplit[0]);
 
                     calificacionEstrellas.getOnRatingBarChangeListener();
-
-
 
                 }
             }
@@ -179,22 +182,29 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
+
                 if(!contrasena_antigua.isEmpty() && !contrasena_nueva.isEmpty()){
                     if (contrasena_nueva.length() >= 6){
                         if(!contrasena_antigua.equals(contrasena_nueva)){
+
                             database.child("Users").child("Clientes").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()){
+
                                         String contrasena_db = snapshot.child("Contraseña").getValue().toString();
+
                                         if (contrasena_antigua.equals(contrasena_db)){
+
                                             Map<String, Object> contraMap = new HashMap<>();
                                             contraMap.put("Contraseña", contrasena_nueva);
                                             database.child("Users").child("Clientes").child(id).updateChildren(contraMap);
+                                            db.updateContrasenaActual(id, contrasena_nueva);
                                             //Falta hacer el update en la base de datos local tambien
                                             //Da un pequeño bug que no deja ingresar con la nueva contraseña
                                             //Pero si la cambia en la base detos remota
                                             showAler6();
+
                                             etContrasenaActual.setText("");
                                             etNuevaContrasena.setText("");
                                         }
@@ -299,7 +309,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
     private void showAler6(){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(PerfilFragment.super.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Éxito");
         builder.setMessage("Contraseña actualizada exitosamente");
         builder.setPositiveButton("Aceptar",null);
