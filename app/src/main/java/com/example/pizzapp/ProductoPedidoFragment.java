@@ -1,3 +1,4 @@
+
 package com.example.pizzapp;
 
 import android.database.Cursor;
@@ -33,9 +34,11 @@ public class ProductoPedidoFragment extends Fragment {
     public static TextView texts_view_array [] = new TextView[100];
     public static int contador_text_view = 0;
     public static int contador2_text_view = 0;
-    public static int contador = 0;
 
-
+    public static int text_view_prods [] = new int[100];
+    public static TextView texts_view_array_prods [] = new TextView[100];
+    public static int contador_text_view_prods = 0;
+    public static int contador2_text_view_prods = 0;
     public PizzAppDB db;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -106,6 +109,7 @@ public class ProductoPedidoFragment extends Fragment {
             contador_text_view++;
         }
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +119,7 @@ public class ProductoPedidoFragment extends Fragment {
         }
         contador_button = 0;
         contador_text_view = 0;
+        contador_text_view_prods = 0;
     }
 
     @Override
@@ -128,12 +133,13 @@ public class ProductoPedidoFragment extends Fragment {
         TextView textViewDireccion = v.findViewById(R.id.textViewDireccion);
         TextView textViewIdPedido = v.findViewById(R.id.textViewIdPedido);
         TextView textViewTotalPrecio = v.findViewById(R.id.textViewTotalPrecio);
+        TextView textViewProducto = v.findViewById(R.id.textViewIdsProductos);
         ImageView imageViewPizza = v.findViewById(R.id.imageView1);
         int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
                 R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
         newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido, textViewTotalPrecio);
+        //newInstanceTextIdsProds(textViewProducto);
         db = new PizzAppDB(getContext());
-        int[] arrayIdsProd = new int[100];
 
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Cursor p = db.getIdPedidosProducto(id);
@@ -148,6 +154,7 @@ public class ProductoPedidoFragment extends Fragment {
                     String total_pago = c.getString(3);
                     String tel = c.getString(5);
                     String direccion = c.getString(4);
+                    id_producto = c.getInt(9);
 
 
                     if (id_pedido == Integer.parseInt(textViewPorciones.getTag().toString())) {
@@ -157,12 +164,13 @@ public class ProductoPedidoFragment extends Fragment {
                         String[] parts = direccion.split(",");
                         String direccion_simplificada = parts[0]; //
                         textViewDireccion.setText("Dirección: " + direccion_simplificada);
-
+                        imageViewPizza.setImageResource(galeria[id_producto-1]);
                         textViewIdPedido.setText("# " + id_pedido);
                     }
 
                 } while (c.moveToNext());
             }
+
         }catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
@@ -175,29 +183,8 @@ public class ProductoPedidoFragment extends Fragment {
         db = new PizzAppDB(getContext());
         String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Cursor c = db.getPedidos(id);
-        try {
-            int cantidad_pedidos_pendientes = 0;
-            //Nos aseguramos de que existe al menos un registro
-            if (c.moveToFirst()) {
-                //Recorremos el cursor hasta que no haya más registros
-                do {
-                    int id_pedido = c.getInt(0);
-                    String fecha_pedido = c.getString(1);
-                    String cant_producto = c.getString(2);
-                    String total_pago = c.getString(3);
-                    String direccion_pedido = c.getString(4);
-                    String entregado_check = c.getString(5);
-                    int id_usuario = c.getInt(6);
-                    int id_producto = c.getInt(7);
-                    cantidad_pedidos_pendientes++;
-                } while (c.moveToNext());
-                return c;
-            }
-        }catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-        }
         return c;
     }
+
 
 }

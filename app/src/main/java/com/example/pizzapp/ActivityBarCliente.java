@@ -1,6 +1,7 @@
 package com.example.pizzapp;
 
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.gms.ads.AdRequest;
@@ -9,6 +10,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,7 +25,14 @@ public class ActivityBarCliente extends AppCompatActivity {
         setContentView(R.layout.activity_bar_cliente);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         getSupportActionBar().hide();
+        getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.red_main));
 
+        }
+        if (Build.VERSION.SDK_INT >= 28){
+            getWindow().setNavigationBarDividerColor(ContextCompat.getColor(this, R.color.black));
+        }
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

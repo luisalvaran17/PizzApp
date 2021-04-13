@@ -151,9 +151,31 @@ public class PedidoPendienteFragment extends Fragment {
         Button btnDetalle = v.findViewById(R.id.buttonDetallesPedido);
         TextView textAsignarentrega = v.findViewById(R.id.textViewAsignarPedido);
         ImageView imageViewPlus = v.findViewById(R.id.imageIconAsignarPedido);
+        ImageView imageViewPizza = v.findViewById(R.id.imageView1);
+        int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
+                R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
         newInstanceText(textAsignarentrega);
         newInstanceButton(btnDetalle);
         newInstanceImage(imageViewPlus);
+
+        db = new PizzAppDB(getContext());
+        Cursor pedidos = db.getPedido(btnDetalle.getTag().toString());
+
+        try {
+            if (pedidos.moveToFirst()) {
+                do {
+                    int id_pedido = pedidos.getInt(0);
+                    int id_producto = pedidos.getInt(9);
+                    if (id_pedido == Integer.parseInt(textAsignarentrega.getTag().toString())) {
+                        imageViewPizza.setImageResource(galeria[id_producto-1]);
+                    }
+                } while (pedidos.moveToNext());
+            }
+
+        }catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+        }
 
         // Button, asignación tag para diferenciar los botones
         btnDetalle.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +259,6 @@ public class PedidoPendienteFragment extends Fragment {
                 db = new PizzAppDB(getContext());
                 Cursor c = db.getPedido(imageViewPlus.getTag().toString());
 
-
                 String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 String id_repartidor = id;  //  -> PENDIENTE: Traer id del login
@@ -266,28 +287,6 @@ public class PedidoPendienteFragment extends Fragment {
     public Cursor getPedidosNoAsignados() {
         db = new PizzAppDB(getContext());
         Cursor c = db.getPedidosNoAsignados();
-        try {
-            int cantidad_pedidos_pendientes = 0;
-            //Nos aseguramos de que existe al menos un registro
-            if (c.moveToFirst()) {
-                //Recorremos el cursor hasta que no haya más registros
-                do {
-                    int id_pedido = c.getInt(0);
-                    String fecha_pedido = c.getString(1);
-                    String cant_producto = c.getString(2);
-                    String total_pago = c.getString(3);
-                    String direccion_pedido = c.getString(4);
-                    String entregado_check = c.getString(5);
-                    int id_usuario = c.getInt(6);
-                    int id_producto = c.getInt(7);
-                    cantidad_pedidos_pendientes++;
-                } while (c.moveToNext());
-                return c;
-            }
-        }catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-        }
         return c;
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,6 +123,9 @@ public class PedidosEntregadosFragment extends Fragment {
         TextView textViewDireccion = v.findViewById(R.id.textViewDireccion);
         TextView textViewIdPedido = v.findViewById(R.id.textViewIdPedido);
         TextView textViewTotalPrecio = v.findViewById(R.id.textViewTotalPrecio);
+        ImageView imageViewPizza = v.findViewById(R.id.imageView1);
+        int[] galeria = {R.drawable.vegetariana, R.drawable.ranchera,
+                R.drawable.hawaii, R.drawable.estofado, R.drawable.italiana, R.drawable.familia};
         newInstanceText(textViewPorciones, textViewTel, textViewDireccion, textViewIdPedido, textViewTotalPrecio);
         db = new PizzAppDB(getContext());
 
@@ -136,7 +140,7 @@ public class PedidosEntregadosFragment extends Fragment {
                     String total_pago = c.getString(3);
                     String tel = c.getString(5);
                     String direccion = c.getString(4);
-
+                    int id_producto = c.getInt(9);
 
                     if(id_pedido == Integer.parseInt(textViewPorciones.getTag().toString())){
                         textViewPorciones.setText("Cantidad: " + cantidad_porciones);
@@ -147,6 +151,7 @@ public class PedidosEntregadosFragment extends Fragment {
                         String direccion_simplificada = parts[0]; //
                         textViewDireccion.setText("Dirección: " + direccion_simplificada);
 
+                        imageViewPizza.setImageResource(galeria[id_producto-1]);
                         textViewIdPedido.setText("# " + id_pedido);
                     }
                 } while (c.moveToNext());
