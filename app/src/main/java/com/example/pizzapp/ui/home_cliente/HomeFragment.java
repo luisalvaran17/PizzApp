@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.pizzapp.Conexion;
 import com.example.pizzapp.HomeMenuFragment;
 import com.example.pizzapp.PedidoPendienteFragment;
 import com.example.pizzapp.PizzAppDB;
@@ -144,7 +145,8 @@ public class HomeFragment extends Fragment  {
         timer.scheduleAtFixedRate(new TimerTask() {
 
             public void run() {
-
+                if(getActivity() == null)
+                    return;
                 getActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         imageSwitcher.setImageResource(galeria[posicion]);
